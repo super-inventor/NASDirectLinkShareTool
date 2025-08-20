@@ -1,0 +1,5 @@
+port: 5001 #服务端口，默认5001，下载服务5000 | Server port Default 5001
+database: '<你的database所在位置>' #database name and location
+root: '<NAS根目录>' #NAS root localtion
+read: 8 #读取速率，越大sha计算越快，但会占据更大的内存 | sha calculator read the file size each time
+password: '<你的密码>' #your password

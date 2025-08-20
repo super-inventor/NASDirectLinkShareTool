@@ -1,0 +1,111 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作结果 - NAS文件直链共享工具</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色，保持与系统一致 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        success: '#10B981',
+                        danger: '#EF4444',
+                        dark: {
+                            100: '#374151',
+                            200: '#1F2937',
+                            300: '#111827',
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-300 font-sans text-gray-100 min-h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="bg-dark-200 shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-wrap justify-between items-center gap-4">
+                <!-- 左侧标题 -->
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-dashboard text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold text-primary">文件共享系统</h1>
+                </div>
+                
+                <!-- 右侧导航链接 -->
+                <div class="flex items-center space-x-6">
+                  <a href="/dashboard" class="text-gray-200 hover:text-primary transition-colors flex items-center">
+                        <i class="fa fa-home mr-1"></i>
+                        <span>仪表盘</span>
+                  </a>  
+                  <a href="/create" class="text-gray-200 hover:text-primary transition-colors flex items-center">
+                        <i class="fa fa-plus-circle mr-1"></i>
+                        <span>新建文件</span>
+                    </a>
+                    <button class="bg-danger/20 hover:bg-danger/30 text-danger px-4 py-2 rounded transition-colors flex items-center">
+                        <i class="fa fa-sign-out mr-1"></i>
+                        <span>登出</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-16">
+        <div class="max-w-md mx-auto">
+            <!-- 结果卡片 -->
+            <div class="bg-dark-200 rounded-xl shadow-lg border border-dark-100 overflow-hidden transform transition-all duration-500 animate-fade-in">
+                <div class="p-8 text-center">
+                    <!-- 结果图标 -->
+                    <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center 
+                                {% if '成功' in msg %}bg-success/20 text-success{% else %}bg-danger/20 text-danger{% endif %}">
+                        <i class="fa {% if '成功' in msg %}fa-check{% else %}fa-exclamation-triangle{% endif %} text-2xl"></i>
+                    </div>
+                    
+                    <!-- 结果消息 -->
+                    <h2 class="text-xl font-bold mb-4">操作结果</h2>
+                    <p class="text-gray-300 mb-8">{{ msg }}</p>
+                    
+                    <!-- 返回按钮 -->
+                    <a href="/dashboard" 
+                       class="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg
+                              transition-all duration-200 transform hover:scale-105 active:scale-95">
+                        <i class="fa fa-arrow-left mr-2"></i>
+                        <span>返回仪表盘</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark-200 border-t border-dark-100 mt-auto fixed bottom-0 left-0 right-0">
+        <div class="container mx-auto px-4 py-4 text-center text-gray-400 text-sm">
+            <p>©2025 super-inventor NAS文件直链共享工具</p>
+        </div>
+    </footer>
+
+    <!-- 动画效果脚本 -->
+    <script>
+        // 添加页面载入动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const card = document.querySelector('.animate-fade-in');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

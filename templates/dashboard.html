@@ -1,0 +1,139 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAS直链共享仪表盘</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        danger: '#EF4444',
+                        dark: {
+                            100: '#374151',
+                            200: '#1F2937',
+                            300: '#111827',
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-300 font-sans text-gray-100 min-h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="bg-dark-200 shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-wrap justify-between items-center gap-4">
+                <!-- 左侧标题 -->
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-dashboard text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold text-primary">文件共享仪表盘</h1>
+                </div>
+                
+                <!-- 右侧导航链接 -->
+                <div class="flex items-center space-x-6">
+                    <a href="/create" class="text-gray-200 hover:text-primary transition-colors flex items-center">
+                        <i class="fa fa-plus-circle mr-1"></i>
+                        <span>新建文件</span>
+                    </a>
+                    <button class="bg-danger/20 hover:bg-danger/30 text-danger px-4 py-2 rounded transition-colors flex items-center" onclick="window.location.href='/logout'">
+                        <i class="fa fa-sign-out mr-1"></i>
+                        <span>登出</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 统计信息 -->
+        <div class="bg-dark-200 rounded-lg shadow-sm p-4 mb-6 border border-dark-100">
+            <p class="text-gray-300">当前共有 <span class="font-bold text-primary">{{ total }}</span> 个文件</p>
+        </div>
+        
+        <!-- 表格区域 -->
+        <div class="bg-dark-200 rounded-lg shadow-sm overflow-hidden border border-dark-100">
+            <div class="p-4 border-b border-dark-100">
+                <h2 class="font-bold text-lg">文件列表</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-dark-100">
+                            <th class="px-6 py-3 text-left font-semibold text-gray-300">SHA-256</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-300">文件名</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-300">已下载次数</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-300">过期时间</th>
+                            <th class="px-6 py-3 text-left font-semibold text-gray-300">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows %}
+                        <tr class="border-b border-dark-100 hover:bg-dark-100/50 transition-colors">
+                            <td class="px-6 py-4 font-mono text-xs truncate max-w-xs">
+                                <div class="flex items-center">
+                                    <i class="fa fa-hashtag text-primary/70 mr-2"></i>
+                                    <span>{{ row["sha256"] }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-file-text-o text-gray-400 mr-2"></i>
+                                    <span>{{ row["file_name"] }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-download text-primary/70 mr-2"></i>
+                                    <span>{{ row["current_downloads"] }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <i class="fa fa-clock-o text-gray-400 mr-2"></i>
+                                    <span>{{ row["expire_time"] }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex space-x-3">
+<!--注意！请在此处填写您的下载地址！--><a href="<你的下载地址>/{{ row["sha256"] }}" 
+                                       class="text-primary hover:text-primary/80 transition-colors flex items-center"
+                                       title="查看文件">
+                                        <i class="fa fa-external-link mr-1"></i>
+                                        <span>前往</span>
+                                    </a>
+                                    <a href="/{{ row["sha256"] }}/delet" 
+                                       class="text-danger hover:text-danger/80 transition-colors flex items-center"
+                                       title="删除文件"
+                                       onclick="return confirm('确定要删除这个文件吗？')">
+                                        <i class="fa fa-trash mr-1"></i>
+                                        <span>删除</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark-200 border-t border-dark-100 mt-8">
+        <div class="container mx-auto px-4 py-4 text-center text-gray-400 text-sm">
+            <p>©2025 super-inventor NAS文件直链共享工具</p>
+        </div>
+    </footer>
+</body>
+</html>

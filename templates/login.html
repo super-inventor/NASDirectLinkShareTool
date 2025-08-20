@@ -1,0 +1,105 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - NAS文件直链共享工具</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色，保持与仪表盘一致 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        danger: '#EF4444',
+                        dark: {
+                            100: '#374151',
+                            200: '#1F2937',
+                            300: '#111827',
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-300 font-sans text-gray-100 min-h-screen flex items-center justify-center p-4">
+    <!-- 登录卡片 -->
+    <div class="w-full max-w-md bg-dark-200 rounded-xl shadow-lg border border-dark-100 overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+        <!-- 卡片头部 -->
+        <div class="bg-dark-100 p-6 border-b border-dark-100">
+            <div class="flex justify-center items-center mb-2">
+                <i class="fa fa-lock text-primary text-3xl"></i>
+            </div>
+            <h2 class="text-center text-xl font-bold">文件共享系统</h2>
+            <p class="text-center text-gray-400 text-sm mt-1">请输入密码进行登录</p>
+        </div>
+        
+        <!-- 登录表单 -->
+        <div class="p-6">
+            <form action="/login" method="POST" enctype="application/x-www-form-urlencoded" class="space-y-4">
+                <!-- 密码输入框 -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa fa-key text-gray-400"></i>
+                    </div>
+                    <input type="password" id="password" name="pwd" 
+                           class="block w-full pl-10 pr-10 py-3 bg-dark-300 border border-dark-100 rounded-lg 
+                                  focus:ring-2 focus:ring-primary focus:border-primary transition-all
+                                  text-gray-100 placeholder-gray-500"
+                           placeholder="请输入密码" required>
+                    <button type="button" id="togglePwd" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-eye-slash"></i>
+                    </button>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <button type="submit" 
+                        class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg 
+                               transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]
+                               flex items-center justify-center">
+                    <i class="fa fa-sign-in mr-2"></i>
+                    <span>登录</span>
+                </button>
+            </form>
+          
+
+    <!-- 页脚 -->
+    <footer class="absolute bottom-4 left-0 right-0 text-center text-gray-500 text-sm">
+        <p>©2025 super-inventor NAS文件直链共享工具</p>
+    </footer>
+
+    <!-- 密码显示/隐藏切换功能 -->
+    <script>
+        const toggleBtn = document.getElementById('togglePwd');
+        const passwordInput = document.getElementById('password');
+        
+        toggleBtn.addEventListener('click', () => {
+            // 切换密码可见性
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // 切换图标
+            const icon = toggleBtn.querySelector('i');
+            if (type === 'password') {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // 添加表单提交动画
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i><span>登录中...</span>';
+        });
+    </script>
+</body>
+</html>
